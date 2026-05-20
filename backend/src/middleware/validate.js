@@ -7,7 +7,7 @@ const GAME_MODES = new Set(['solo', 'solo-fpp', 'duo', 'duo-fpp', 'squad', 'squa
 
 const PLAYER_ID_RE = /^account\.[A-Za-z0-9_-]+$/;
 const MATCH_ID_RE = /^[A-Za-z0-9-]{8,}$/;
-const SEASON_ID_RE = /^division\.bro\.official\.(pc|console)-2018-\d+$/;
+const SEASON_ID_RE = /^division\.bro\.official\.(?:pc|console)-2018-\d+$|^division\.bro\.official\.(?:playstation|xbox|stadia)-\d+$/;
 const PLAYER_NAME_RE = /^[\w.\- ]{2,32}$/;
 
 const TELEMETRY_HOSTS = new Set([

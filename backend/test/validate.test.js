@@ -55,11 +55,19 @@ test('validates player names and IDs', () => {
 });
 
 test('validates PUBG season and match IDs', () => {
-  assert.equal(runValidator(validateSeasonId, { params: { seasonId: 'division.bro.official.pc-2018-30' } }).nextCalled, true);
-  assert.equal(runValidator(validateSeasonId, { params: { seasonId: 'division.bro.official.console-2018-30' } }).nextCalled, true);
+  [
+    'division.bro.official.pc-2018-30',
+    'division.bro.official.console-2018-30',
+    'division.bro.official.playstation-01',
+    'division.bro.official.xbox-01',
+    'division.bro.official.stadia-01',
+  ].forEach((seasonId) => {
+    assert.equal(runValidator(validateSeasonId, { params: { seasonId } }).nextCalled, true);
+  });
   assert.equal(runValidator(validateMatchId, { params: { matchId: '2b2b4c7e-1234-4fd1-9bd8-777777777777' } }).nextCalled, true);
 
   assert.equal(runValidator(validateSeasonId, { params: { seasonId: '../secret' } }).statusCode, 400);
+  assert.equal(runValidator(validateSeasonId, { params: { seasonId: 'division.bro.official.pc-latest' } }).statusCode, 400);
   assert.equal(runValidator(validateMatchId, { params: { matchId: '../../etc/passwd' } }).statusCode, 400);
 });
 
