@@ -7,6 +7,8 @@ import { getMapName, formatDateTime, formatTime } from '../../utils/formatters';
 import Badge from '../common/Badge';
 import { Trophy, Users, Clock, Map, ChevronDown, ChevronUp } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
+import TelemetryReport from './TelemetryReport';
+import { getTelemetryAssetUrl } from '../../utils/telemetry';
 
 const SORT_FIELDS = [
   { key: 'winPlace', labelKey: 'match_rank' },
@@ -19,7 +21,7 @@ const SORT_FIELDS = [
 ];
 
 function ParticipantRow({ p, isHighlight }) {
-  const { t, lang } = useLanguage();
+  const { t } = useLanguage();
   const s = p.attributes?.stats || {};
   const isWin = s.winPlace === 1;
 
@@ -108,7 +110,7 @@ export default function MatchDetail({ platform, matchId, highlightPlayerName }) 
   const [viewMode, setViewMode] = useState('teams'); // 'teams' | 'all'
   const [sortField, setSortField] = useState('winPlace');
   const [sortAsc, setSortAsc] = useState(true);
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['match', platform, matchId],
@@ -124,6 +126,7 @@ export default function MatchDetail({ platform, matchId, highlightPlayerName }) 
   const participants = included.filter((i) => i.type === 'participant');
   const rosters = included.filter((i) => i.type === 'roster');
   const duration = Math.round((attrs.duration || 0) / 60);
+  const telemetryUrl = getTelemetryAssetUrl(included);
 
   const sortedAll = [...participants].sort((a, b) => {
     const aV = a.attributes?.stats?.[sortField] ?? 0;
@@ -171,6 +174,12 @@ export default function MatchDetail({ platform, matchId, highlightPlayerName }) 
           </div>
         </div>
       </div>
+
+      <TelemetryReport
+        telemetryUrl={telemetryUrl}
+        matchStart={attrs.createdAt}
+        highlightPlayerName={highlightPlayerName}
+      />
 
       {/* View toggle */}
       <div className="flex items-center gap-2 border-b border-pubg-border pb-3">

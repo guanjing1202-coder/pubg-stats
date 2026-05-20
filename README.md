@@ -1,15 +1,17 @@
 # PUBG 战绩统计
 
-PUBG 战绩统计是一个基于官方 PUBG API 的全栈玩家数据分析应用。它支持玩家搜索、赛季数据、排位数据、生涯表现、比赛历史、比赛详情、武器熟练度、生存熟练度、全球排行榜、收藏夹、最近搜索，以及中英文双语界面。
+PUBG 战绩统计是一个基于官方 PUBG API 的全栈玩家数据分析应用。它支持玩家搜索、公会信息、赛季数据、排位数据、生涯表现、比赛历史、比赛详情、Telemetry 遥测战报、武器熟练度、生存熟练度、全球排行榜、收藏夹、最近搜索，以及中英文双语界面。
 
 ## 功能特性
 
 - 按平台和玩家名称搜索 PUBG 玩家
+- 查看玩家公会标签，并可进入公会详情页
 - 按游戏模式查看当前赛季和历史赛季数据
 - 查看排位段位、RP、最高段位和排位表现
 - 查看生涯数据，并通过雷达图展示综合表现
 - 加载近期比赛记录，并深入查看完整比赛详情
 - 查看队伍排名、阵容信息和可排序的参赛者表格
+- 按需解析官方 Telemetry 事件流，生成击杀时间线、伤害排行和玩家高亮事件
 - 查看武器熟练度和生存熟练度数据
 - 按地区、赛季和模式浏览全球排行榜
 - 使用 localStorage 保存收藏玩家和最近搜索
@@ -40,6 +42,7 @@ pubg-stats/
 │   │   │   ├── cache.js
 │   │   │   └── validate.js
 │   │   ├── routes/
+│   │   │   ├── clans.js
 │   │   │   ├── leaderboards.js
 │   │   │   ├── matches.js
 │   │   │   ├── players.js
@@ -142,6 +145,7 @@ npm test         # 运行后端参数校验测试
 ```bash
 npm run dev      # 启动 Vite 开发服务器
 npm run build    # 构建生产版本
+npm test         # 运行前端工具函数测试
 npm run preview  # 预览生产构建结果
 ```
 
@@ -158,6 +162,7 @@ npm run preview  # 预览生产构建结果
 | `GET /api/:platform/players/:playerId/seasons/:seasonId` | 获取赛季数据 |
 | `GET /api/:platform/players/:playerId/seasons/:seasonId/ranked` | 获取排位数据 |
 | `GET /api/:platform/players/:playerId/lifetime` | 获取生涯数据 |
+| `GET /api/:platform/clans/:clanId` | 获取公会详情 |
 | `GET /api/:platform/matches/:matchId` | 获取比赛详情 |
 | `GET /api/telemetry?url=` | 获取白名单内的遥测 JSON |
 | `GET /api/:platform/players/:playerId/weapon_mastery` | 获取武器熟练度 |
@@ -186,10 +191,11 @@ cd backend
 npm test
 ```
 
-构建前端：
+运行前端测试并构建：
 
 ```bash
 cd frontend
+npm test
 npm run build
 ```
 
