@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-pubg-darker text-gray-100 font-sans antialiased;
+    min-height: 100vh;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-pubg-dark;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-pubg-border rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-pubg-muted;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-pubg-card border border-pubg-border rounded-xl;
+  }
+
+  .btn-primary {
+    @apply bg-pubg-orange hover:bg-amber-500 text-black font-semibold px-5 py-2.5 rounded-lg
+           transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-ghost {
+    @apply border border-pubg-border hover:border-pubg-orange text-gray-300 hover:text-pubg-orange
+           px-4 py-2 rounded-lg transition-all duration-200;
+  }
+
+  .stat-value {
+    @apply text-2xl font-bold text-white font-mono;
+  }
+
+  .stat-label {
+    @apply text-xs text-pubg-muted uppercase tracking-wider mt-1;
+  }
+
+  .tab-btn {
+    @apply px-4 py-2 text-sm font-medium text-gray-400 hover:text-white transition-colors
+           border-b-2 border-transparent whitespace-nowrap;
+  }
+
+  .tab-btn.active {
+    @apply text-pubg-orange border-pubg-orange;
+  }
+
+  .skeleton {
+    @apply bg-gradient-to-r from-pubg-card via-pubg-border to-pubg-card
+           bg-[length:200%_100%] animate-shimmer rounded;
+  }
+
+  .rank-badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-semibold;
+  }
+}

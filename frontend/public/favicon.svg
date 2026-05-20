@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Hexagon background -->
+  <polygon points="32,4 58,18 58,46 32,60 6,46 6,18" fill="#0D0E12" stroke="#F5A623" stroke-width="2.5"/>
+  <!-- Inner accent line -->
+  <polygon points="32,10 53,21.5 53,44.5 32,56 11,44.5 11,21.5" fill="none" stroke="#F5A623" stroke-width="0.8" stroke-opacity="0.3"/>
+  <!-- G letter -->
+  <path d="M14 26 C14 20 19 16 26 16 C31 16 35 18.5 36.5 22 L33 23.5 C32 21 29.5 19.5 26 19.5 C21 19.5 17.5 22.5 17.5 26 C17.5 29.5 21 32.5 26 32.5 C29 32.5 31.5 31.5 33 29.5 L33 27 L26 27 L26 24 L36.5 24 L36.5 31 C34.5 34 30.5 36 26 36 C19 36 14 31.5 14 26Z" fill="#F5A623"/>
+  <!-- J letter -->
+  <path d="M40 16 L43.5 16 L43.5 38 C43.5 43 41 46 36.5 47 L35.5 43.8 C38 43 40 41 40 38 L40 16Z" fill="#F5A623"/>
+  <!-- Bottom highlight dot -->
+  <circle cx="32" cy="55" r="1.5" fill="#F5A623" opacity="0.6"/>
+</svg>

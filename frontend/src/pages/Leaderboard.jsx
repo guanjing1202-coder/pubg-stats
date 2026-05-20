@@ -1,0 +1,161 @@
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { pubgApi } from '../utils/api';
+import { PageLoader } from '../components/common/LoadingSpinner';
+import ErrorMessage from '../components/common/ErrorMessage';
+import { PLATFORM_REGIONS, GAME_MODES } from '../utils/constants';
+import { Link } from 'react-router-dom';
+import { Trophy } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
+
+const LEADERBOARD_MODES = GAME_MODES.filter((m) => !m.value.includes('fpp') || m.value === 'squad-fpp');
+
+function RankIcon({ rank }) {
+  if (rank === 1) return <span className="text-yellow-400">🥇</span>;
+  if (rank === 2) return <span className="text-gray-300">🥈</span>;
+  if (rank === 3) return <span className="text-amber-600">🥉</span>;
+  return <span className="text-pubg-muted font-mono text-sm">{rank}</span>;
+}
+
+export default function Leaderboard() {
+  const [platformRegion, setPlatformRegion] = useState('pc-as');
+  const [gameMode, setGameMode] = useState('squad');
+  const [seasonId, setSeasonId] = useState('');
+  const { t, lang } = useLanguage();
+
+  const platform = platformRegion.split('-')[0] === 'pc' ? 'steam' : 'xbox';
+  const { data: seasonsData } = useQuery({
+    queryKey: ['seasons', platform],
+    queryFn: () => pubgApi.getSeasons(platform),
+  });
+
+  const seasons = seasonsData?.data || [];
+  const currentSeason = seasons.find((s) => s.attributes?.isCurrentSeason);
+  const effectiveSeason = seasonId || currentSeason?.id;
+
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ['leaderboard', platformRegion, effectiveSeason, gameMode],
+    queryFn: () => pubgApi.getLeaderboard(platformRegion, effectiveSeason, gameMode),
+    enabled: !!effectiveSeason,
+  });
+
+  const players = data?.included?.filter((i) => i.type === 'player') || [];
+
+  return (
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-6 animate-fade-in">
+      {/* Header */}
+      <div className="flex items-center gap-3">
+        <div className="w-10 h-10 bg-pubg-orange/20 rounded-xl flex items-center justify-center">
+          <Trophy size={20} className="text-pubg-orange" />
+        </div>
+        <div>
+          <h1 className="text-2xl font-bold text-white">{t('leaderboard_title')}</h1>
+          <p className="text-sm text-pubg-muted">
+            {t('leaderboard_subtitle')}
+          </p>
+        </div>
+      </div>
+
+      {/* Filters */}
+      <div className="card p-4 flex flex-wrap gap-4">
+        <div>
+          <label className="block text-xs text-pubg-muted mb-1.5">
+            {t('leaderboard_region')}
+          </label>
+          <select value={platformRegion} onChange={(e) => setPlatformRegion(e.target.value)}
+            className="bg-pubg-dark border border-pubg-border text-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-pubg-orange">
+            {PLATFORM_REGIONS.map((r) => (
+              <option key={r.value} value={r.value} className="bg-pubg-dark">{r.label}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="block text-xs text-pubg-muted mb-1.5">{t('leaderboard_mode')}</label>
+          <select value={gameMode} onChange={(e) => setGameMode(e.target.value)}
+            className="bg-pubg-dark border border-pubg-border text-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-pubg-orange">
+            {LEADERBOARD_MODES.map((m) => (
+              <option key={m.value} value={m.value} className="bg-pubg-dark">
+                {t(m.labelKey)}
+              </option>
+            ))}
+          </select>
+        </div>
+        {seasons.length > 0 && (
+          <div>
+            <label className="block text-xs text-pubg-muted mb-1.5">{t('leaderboard_season')}</label>
+            <select value={effectiveSeason} onChange={(e) => setSeasonId(e.target.value)}
+              className="bg-pubg-dark border border-pubg-border text-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-pubg-orange">
+              {seasons.slice(0, 8).map((s) => (
+                <option key={s.id} value={s.id} className="bg-pubg-dark">
+                  {s.id.replace('division.bro.official.', '').replace('pc-2018-', 'Season ').replace('console-2018-', 'Season ')}
+                  {s.attributes?.isCurrentSeason ? ` (${t('season_current')})` : ''}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+      </div>
+
+      {/* Leaderboard table */}
+      {isLoading ? <PageLoader /> : error ? <ErrorMessage error={error} onRetry={refetch} /> : (
+        <div className="card overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="text-xs text-pubg-muted uppercase tracking-wider border-b border-pubg-border">
+                  <th className="px-4 py-3 text-left w-16">{t('leaderboard_rank')}</th>
+                  <th className="px-4 py-3 text-left">{t('leaderboard_player')}</th>
+                  <th className="px-4 py-3 text-center">{t('leaderboard_games')}</th>
+                  <th className="px-4 py-3 text-center">{t('leaderboard_wins')}</th>
+                  <th className="px-4 py-3 text-center">{t('leaderboard_kills')}</th>
+                  <th className="px-4 py-3 text-center">{t('leaderboard_kda')}</th>
+                  <th className="px-4 py-3 text-center">{t('leaderboard_rp')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {players.length === 0 ? (
+                  <tr>
+                    <td colSpan={7} className="text-center py-12 text-pubg-muted">
+                      {t('leaderboard_no_data')}
+                    </td>
+                  </tr>
+                ) : (
+                  players.map((p, idx) => {
+                    const attrs = p.attributes || {};
+                    const stats = attrs.stats || {};
+                    const rank = stats.rank || idx + 1;
+                    const kda = stats.kills > 0
+                      ? ((stats.kills + (stats.assists || 0) * 0.5) / Math.max(stats.deaths || 1, 1)).toFixed(2)
+                      : '-';
+
+                    return (
+                      <tr key={p.id} className={`border-b border-pubg-border/50 hover:bg-pubg-card/50 transition-colors
+                        ${rank <= 3 ? 'bg-yellow-500/5' : ''}`}>
+                        <td className="px-4 py-3 w-16">
+                          <div className="flex items-center justify-center w-8">
+                            <RankIcon rank={rank} />
+                          </div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <Link to={`/player/${platform}/${encodeURIComponent(attrs.name)}`}
+                            className="text-white hover:text-pubg-orange transition-colors font-medium">
+                            {attrs.name}
+                          </Link>
+                        </td>
+                        <td className="px-4 py-3 text-center text-gray-400 font-mono text-sm">{stats.gamesPlayed || '-'}</td>
+                        <td className="px-4 py-3 text-center text-gray-400 font-mono text-sm">{stats.wins || '-'}</td>
+                        <td className="px-4 py-3 text-center text-white font-mono text-sm font-bold">{stats.kills || '-'}</td>
+                        <td className="px-4 py-3 text-center text-pubg-orange font-mono text-sm font-bold">{kda}</td>
+                        <td className="px-4 py-3 text-center text-pubg-orange font-mono text-sm font-bold">{stats.rankPoints || '-'}</td>
+                      </tr>
+                    );
+                  })
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
