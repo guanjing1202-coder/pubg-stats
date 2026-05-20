@@ -10,7 +10,7 @@ import { useLanguage } from '../../contexts/LanguageContext';
 
 function StatPill({ icon, label, value }) {
   return (
-    <div className="card p-3">
+    <div className="rounded-lg border border-pubg-border/70 bg-pubg-border/20 p-3">
       <div className="flex items-center gap-2 text-xs text-pubg-muted uppercase tracking-wider">
         {icon}
         {label}
@@ -20,21 +20,32 @@ function StatPill({ icon, label, value }) {
   );
 }
 
-function DamageRows({ rows }) {
+function DamageRows({ rows, tone = 'orange' }) {
   const { t } = useLanguage();
 
   if (rows.length === 0) {
     return <div className="text-sm text-pubg-muted">{t('telemetry_no_data')}</div>;
   }
 
+  const valueClass = tone === 'red' ? 'text-red-300' : tone === 'blue' ? 'text-sky-300' : 'text-pubg-orange';
+
   return (
     <div className="space-y-2">
       {rows.slice(0, 5).map((row) => (
         <div key={row.name} className="flex items-center justify-between gap-3 text-sm">
           <span className="text-gray-300 truncate">{row.name}</span>
-          <span className="text-pubg-orange font-mono font-bold">{formatNumber(row.value)}</span>
+          <span className={`${valueClass} font-mono font-bold`}>{formatNumber(row.value)}</span>
         </div>
       ))}
+    </div>
+  );
+}
+
+function AnalysisCard({ title, children }) {
+  return (
+    <div className="rounded-lg border border-pubg-border/70 bg-pubg-border/20 p-4 min-h-[148px]">
+      <h4 className="text-sm font-semibold text-white mb-3">{title}</h4>
+      {children}
     </div>
   );
 }
@@ -119,13 +130,23 @@ export default function TelemetryReport({ telemetryUrl, matchStart, highlightPla
             </div>
           )}
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div className="card p-4">
-              <h4 className="text-sm font-semibold text-white mb-3">{t('telemetry_top_damage')}</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+            <AnalysisCard title={t('telemetry_top_damage')}>
               <DamageRows rows={report.topDamage} />
-            </div>
-            <div className="card p-4">
-              <h4 className="text-sm font-semibold text-white mb-3">{t('telemetry_kill_timeline')}</h4>
+            </AnalysisCard>
+            <AnalysisCard title={t('telemetry_top_damage_taken')}>
+              <DamageRows rows={report.topDamageTaken} tone="red" />
+            </AnalysisCard>
+            <AnalysisCard title={t('telemetry_damage_sources')}>
+              <DamageRows rows={report.topDamageCausers} tone="blue" />
+            </AnalysisCard>
+            <AnalysisCard title={t('telemetry_damage_types')}>
+              <DamageRows rows={report.topDamageCategories} />
+            </AnalysisCard>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <AnalysisCard title={t('telemetry_kill_timeline')}>
               <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
                 {report.kills.length === 0 ? (
                   <div className="text-sm text-pubg-muted">{t('telemetry_no_data')}</div>
@@ -140,7 +161,7 @@ export default function TelemetryReport({ telemetryUrl, matchStart, highlightPla
                   ))
                 )}
               </div>
-            </div>
+            </AnalysisCard>
           </div>
 
           {report.highlightEvents.length > 0 && (

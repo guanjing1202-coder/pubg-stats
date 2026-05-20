@@ -19,6 +19,22 @@ function mapToSortedRows(map) {
     .sort((a, b) => b.value - a.value);
 }
 
+export function formatTelemetryItemName(value) {
+  if (!value) return '-';
+
+  const cleaned = String(value)
+    .replace(/^Item_/, '')
+    .replace(/^Weapon_/, '')
+    .replace(/^Damage_/, '')
+    .replace(/_C$/, '')
+    .replace(/^weapon_/, '')
+    .replace(/_/g, ' ');
+
+  if (cleaned.toLowerCase() === 'akm') return 'AKM';
+
+  return cleaned.replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
 export function getTelemetryAssetUrl(included = []) {
   const asset = included.find((item) => item.type === 'asset' && (item.attributes?.URL || item.attributes?.url));
   return asset?.attributes?.URL || asset?.attributes?.url || null;
@@ -41,6 +57,8 @@ export function analyzeTelemetry(events = [], { matchStart, highlightPlayerName 
   const revives = [];
   const damageDealt = new Map();
   const damageTaken = new Map();
+  const damageCausers = new Map();
+  const damageCategories = new Map();
   let damageEventCount = 0;
 
   events.forEach((event) => {
@@ -68,6 +86,8 @@ export function analyzeTelemetry(events = [], { matchStart, highlightPlayerName 
       damageEventCount += 1;
       addToMap(damageDealt, attacker, damage);
       addToMap(damageTaken, victim, damage);
+      addToMap(damageCausers, formatTelemetryItemName(event.damageCauserName), damage);
+      addToMap(damageCategories, formatTelemetryItemName(event.damageTypeCategory), damage);
     }
 
     if (type === 'LogPlayerMakeGroggy') {
@@ -125,6 +145,8 @@ export function analyzeTelemetry(events = [], { matchStart, highlightPlayerName 
     phases: phases.sort((a, b) => a.time - b.time),
     topDamage: mapToSortedRows(damageDealt),
     topDamageTaken: mapToSortedRows(damageTaken),
+    topDamageCausers: mapToSortedRows(damageCausers),
+    topDamageCategories: mapToSortedRows(damageCategories),
     highlight,
     highlightEvents,
   };
