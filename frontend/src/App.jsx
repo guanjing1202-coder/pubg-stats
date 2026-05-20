@@ -6,6 +6,7 @@ import Footer from './components/layout/Footer';
 import Home from './pages/Home';
 import Player from './pages/Player';
 import Match from './pages/Match';
+import Clan from './pages/Clan';
 import Leaderboard from './pages/Leaderboard';
 import NotFound from './pages/NotFound';
 
@@ -20,6 +21,7 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/player/:platform/:playerName" element={<Player />} />
               <Route path="/match/:platform/:matchId" element={<Match />} />
+              <Route path="/clan/:platform/:clanId" element={<Clan />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

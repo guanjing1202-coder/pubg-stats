@@ -6,6 +6,7 @@ const {
   validateGameMode,
   validatePlayerName,
   validatePlayerId,
+  validateClanId,
   validateSeasonId,
   validateMatchId,
   validateTelemetryUrl,
@@ -52,6 +53,12 @@ test('validates player names and IDs', () => {
 
   assert.equal(runValidator(validatePlayerName, { query: { name: '<script>' } }).statusCode, 400);
   assert.equal(runValidator(validatePlayerId, { params: { playerId: 'not-account' } }).statusCode, 400);
+});
+
+test('validates clan IDs', () => {
+  assert.equal(runValidator(validateClanId, { params: { clanId: 'clan.abc_123-XYZ' } }).nextCalled, true);
+  assert.equal(runValidator(validateClanId, { params: { clanId: 'account.abc_123-XYZ' } }).statusCode, 400);
+  assert.equal(runValidator(validateClanId, { params: { clanId: '../secret' } }).statusCode, 400);
 });
 
 test('validates PUBG season and match IDs', () => {

@@ -47,4 +47,8 @@ export const pubgApi = {
   // Leaderboard
   getLeaderboard: (platformRegion, seasonId, gameMode) =>
     client.get(`/${platformRegion}/leaderboards/${seasonId}/${gameMode}`),
+
+  // Clans
+  getClan: (platform, clanId) =>
+    client.get(`/${platform}/clans/${clanId}`),
 };

@@ -102,6 +102,13 @@ async function getLeaderboard(platformRegion, seasonId, gameMode) {
   return data;
 }
 
+// ── Clans ────────────────────────────────────────────────────────────────────
+
+async function getClan(platform, clanId) {
+  const { data } = await pubgClient.get(`/shards/${platform}/clans/${clanId}`);
+  return data;
+}
+
 // ── Status ────────────────────────────────────────────────────────────────────
 
 async function getStatus() {
@@ -130,6 +137,7 @@ module.exports = {
   getWeaponMastery,
   getSurvivalMastery,
   getLeaderboard,
+  getClan,
   getStatus,
   getTelemetry,
 };

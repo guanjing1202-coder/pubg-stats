@@ -1,6 +1,9 @@
-import { User, Clock, Hash, ShieldCheck, ShieldAlert, ShieldX } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { User, Clock, Hash, ShieldCheck, ShieldAlert, ShieldX, Users } from 'lucide-react';
 import { getPlatformLabel, formatDateTime } from '../../utils/formatters';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { pubgApi } from '../../utils/api';
 
 const BAN_STYLES = {
   Innocent:         { style: 'bg-green-500/15 border-green-500/30 text-green-400',   Icon: ShieldCheck, key: 'ban_innocent' },
@@ -32,6 +35,18 @@ export default function PlayerHeader({ player, platform }) {
   const { t, lang } = useLanguage();
   const attrs = player?.data?.attributes || {};
   const id = player?.data?.id || '';
+  const clanId = attrs.clanId || attrs.clanID || attrs.ClanId || attrs.ClanID;
+
+  const { data: clanData } = useQuery({
+    queryKey: ['clan', platform, clanId],
+    queryFn: () => pubgApi.getClan(platform, clanId),
+    enabled: !!clanId,
+    staleTime: 60 * 60 * 1000,
+  });
+
+  const clanAttrs = clanData?.data?.attributes || {};
+  const clanName = clanAttrs.clanName || clanAttrs.name || t('clan_unknown');
+  const clanTag = clanAttrs.clanTag || clanAttrs.tag;
 
   return (
     <div className="card overflow-hidden">
@@ -65,6 +80,15 @@ export default function PlayerHeader({ player, platform }) {
                   <Clock size={12} />
                   {formatDateTime(attrs.updatedAt, t, lang)}
                 </span>
+              )}
+              {clanId && (
+                <Link
+                  to={`/clan/${platform}/${encodeURIComponent(clanId)}`}
+                  className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-pubg-orange/10 border border-pubg-orange/30 text-pubg-orange hover:bg-pubg-orange/20 transition-colors"
+                >
+                  <Users size={12} />
+                  {clanTag ? `[${clanTag}] ` : ''}{clanName}
+                </Link>
               )}
             </div>
           </div>

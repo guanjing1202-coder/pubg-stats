@@ -64,6 +64,10 @@ export const translations = {
     ban_hacker: '外挂封禁',
     ban_permanent: '永久封禁',
     ban_bot: 'Bot 账号',
+    clan_unknown: '未知公会',
+    clan_level: '公会等级',
+    clan_members: '成员数',
+    clan_tag: '公会标签',
 
     // Match history
     match_history_empty: '最近 14 天内暂无对局记录',
@@ -318,6 +322,10 @@ export const translations = {
     ban_hacker: 'Hacker Ban',
     ban_permanent: 'Permanently Banned',
     ban_bot: 'Bot Account',
+    clan_unknown: 'Unknown Clan',
+    clan_level: 'Clan Level',
+    clan_members: 'Members',
+    clan_tag: 'Clan Tag',
 
     // Match history
     match_history_empty: 'No matches in the last 14 days',

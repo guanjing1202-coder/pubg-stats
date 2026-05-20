@@ -7,6 +7,7 @@ const playersRouter = require('./routes/players');
 const seasonsRouter = require('./routes/seasons');
 const matchesRouter = require('./routes/matches');
 const leaderboardsRouter = require('./routes/leaderboards');
+const clansRouter = require('./routes/clans');
 const statusRouter = require('./routes/status');
 
 const app = express();
@@ -29,6 +30,7 @@ app.use('/api', playersRouter);       // /api/:platform/players/...
 app.use('/api', seasonsRouter);       // /api/:platform/seasons
 app.use('/api', matchesRouter);       // /api/:platform/matches/:id  &  /api/telemetry
 app.use('/api', leaderboardsRouter);  // /api/:platform/leaderboards/...
+app.use('/api', clansRouter);         // /api/:platform/clans/:id
 app.use('/api/status', statusRouter); // /api/status
 
 // Health check
