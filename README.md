@@ -80,6 +80,8 @@ PUBG_API_KEY=your_pubg_api_key_here
 PORT=3001
 NODE_ENV=development
 CACHE_TTL=300
+SEASONS_CACHE_TTL=604800
+PUBG_RATE_LIMIT_PER_MINUTE=10
 ```
 
 可选配置：
@@ -130,6 +132,20 @@ http://localhost:5173
 start.bat
 ```
 
+`start.bat` 会分别打开后端和前端终端窗口，自动安装依赖并启动开发服务。
+
+## 页面路由
+
+| 路径 | 页面 |
+| --- | --- |
+| `/` | 首页与玩家搜索 |
+| `/player/:platform/:playerName` | 玩家详情、赛季数据、排位数据、生涯数据和比赛历史 |
+| `/match/:platform/:matchId` | 比赛详情与 Telemetry 战报 |
+| `/clan/:platform/:clanId` | 公会详情 |
+| `/leaderboard` | 全球排行榜 |
+
+前端开发服务器会把 `/api` 请求代理到 `http://localhost:3001`，因此本地开发时需要同时启动前端和后端。
+
 ## 常用脚本
 
 后端：
@@ -169,6 +185,12 @@ npm run preview  # 预览生产构建结果
 | `GET /api/:platform/players/:playerId/survival_mastery` | 获取生存熟练度 |
 | `GET /api/:platformRegion/leaderboards/:seasonId/:gameMode` | 获取排行榜 |
 
+后端还提供健康检查接口：
+
+```text
+GET /health
+```
+
 ## 安全说明
 
 - `PUBG_API_KEY` 只在后端使用，不应出现在前端代码中。
@@ -180,23 +202,28 @@ npm run preview  # 预览生产构建结果
 
 - React Query 会在客户端缓存请求结果。
 - 后端使用内存缓存减少对 PUBG API 的重复调用。
+- 赛季列表使用独立缓存时间，默认 604800 秒。
 - 生涯数据和赛季趋势等图表较重的视图采用懒加载，以减小首屏包体积。
 
 ## 测试
 
-运行后端测试：
+推荐在提交前依次运行后端测试、前端测试和前端构建：
 
 ```bash
 cd backend
 npm test
 ```
 
-运行前端测试并构建：
-
 ```bash
 cd frontend
 npm test
 npm run build
+```
+
+如果只改动文档，可以至少运行：
+
+```bash
+git diff --check
 ```
 
 ## PUBG API 说明
