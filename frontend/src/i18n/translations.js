@@ -13,6 +13,8 @@ export const translations = {
     // Home
     home_api_status_ok: 'PUBG API 正常运行',
     home_api_status_loading: 'PUBG API 连接中...',
+    home_api_status_offline: '后端服务未连接',
+    home_api_status_degraded: 'PUBG API 状态异常',
     home_tagline: 'PUBG Tracker & Analytics',
     home_subtitle: 'Search players · Season stats · Ranked · Weapon mastery · Match history',
     home_recent_searches: '最近搜索',
@@ -305,6 +307,8 @@ export const translations = {
     // Home
     home_api_status_ok: 'PUBG API Online',
     home_api_status_loading: 'PUBG API Connecting...',
+    home_api_status_offline: 'Backend Not Connected',
+    home_api_status_degraded: 'PUBG API Degraded',
     home_tagline: 'PUBG Tracker & Analytics',
     home_subtitle: 'Search players · Season stats · Ranked · Weapon mastery · Match history',
     home_recent_searches: 'Recent Searches',

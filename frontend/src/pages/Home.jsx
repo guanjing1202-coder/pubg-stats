@@ -2,9 +2,37 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import SearchBar from '../components/search/SearchBar';
 import { pubgApi } from '../utils/api';
+import { getApiStatusState } from '../utils/apiStatusState';
 import { useRecentSearches, useFavorites } from '../hooks/useLocalStorage';
 import { useLanguage } from '../contexts/LanguageContext';
 import { BarChart3, ClipboardList, Crosshair, Server, Shield, Swords, Clock, Star, Trophy, X, ChevronRight } from 'lucide-react';
+
+const API_STATUS_VIEW = {
+  online: {
+    dotClass: 'bg-green-400',
+    textClass: 'text-green-300',
+    labelKey: 'home_api_status_ok',
+    pulse: true,
+  },
+  checking: {
+    dotClass: 'bg-gray-500',
+    textClass: 'text-pubg-muted',
+    labelKey: 'home_api_status_loading',
+    pulse: true,
+  },
+  network: {
+    dotClass: 'bg-red-400',
+    textClass: 'text-red-300',
+    labelKey: 'home_api_status_offline',
+    pulse: false,
+  },
+  degraded: {
+    dotClass: 'bg-yellow-400',
+    textClass: 'text-yellow-300',
+    labelKey: 'home_api_status_degraded',
+    pulse: false,
+  },
+};
 
 function PlayerLink({ name, platform, onRemove, icon }) {
   const Icon = icon;
@@ -32,7 +60,7 @@ function PlayerLink({ name, platform, onRemove, icon }) {
 
 export default function Home() {
   const { t } = useLanguage();
-  const { data: status } = useQuery({
+  const { data: status, error: statusError, isLoading: statusLoading } = useQuery({
     queryKey: ['apiStatus'],
     queryFn: pubgApi.getStatus,
     refetchInterval: 60000,
@@ -40,7 +68,12 @@ export default function Home() {
   const { searches, removeSearch, clearSearches } = useRecentSearches();
   const { favorites, removeFavorite } = useFavorites();
 
-  const apiOnline = !!status?.data?.id;
+  const apiStatus = getApiStatusState({
+    status,
+    error: statusError,
+    isLoading: statusLoading,
+  });
+  const apiStatusView = API_STATUS_VIEW[apiStatus.kind] || API_STATUS_VIEW.degraded;
 
   const FEATURES = [
     { Icon: Crosshair, titleKey: 'home_feature_season_title', descKey: 'home_feature_season_desc' },
@@ -61,10 +94,10 @@ export default function Home() {
         </div>
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 pt-16 pb-20 text-center">
           {/* API status */}
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-pubg-card border border-pubg-border rounded-full text-xs text-pubg-muted mb-6">
-            <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${apiOnline ? 'bg-green-400' : 'bg-gray-500'}`} />
+          <div className={`inline-flex items-center gap-1.5 px-3 py-1 bg-pubg-card border border-pubg-border rounded-full text-xs mb-6 ${apiStatusView.textClass}`}>
+            <div className={`w-1.5 h-1.5 rounded-full ${apiStatusView.pulse ? 'animate-pulse' : ''} ${apiStatusView.dotClass}`} />
             <Server size={11} />
-            {apiOnline ? t('home_api_status_ok') : t('home_api_status_loading')}
+            {t(apiStatusView.labelKey)}
           </div>
 
           <div className="flex items-center justify-center gap-2 mb-3">
