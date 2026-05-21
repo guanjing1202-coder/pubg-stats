@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { pubgApi } from '../../utils/api';
-import { PageLoader } from '../common/LoadingSpinner';
+import { WeaponMasterySkeleton } from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
 import { formatNumber } from '../../utils/formatters';
 import { useState } from 'react';
@@ -143,7 +143,7 @@ export default function WeaponMastery({ platform, playerId }) {
     queryFn: () => pubgApi.getWeaponMastery(platform, playerId),
   });
 
-  if (isLoading) return <PageLoader />;
+  if (isLoading) return <WeaponMasterySkeleton />;
   if (error) return <ErrorMessage error={error} onRetry={refetch} />;
 
   // Real API structure: data.attributes.weaponSummaries is a dictionary

@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { pubgApi } from '../../utils/api';
 import { extractPlayerStats } from '../../utils/formatters';
 import StatsGrid from './StatsGrid';
-import { PageLoader } from '../common/LoadingSpinner';
+import { PlayerStatsSkeleton } from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
 import { GAME_MODES } from '../../utils/constants';
 import { useLanguage } from '../../contexts/LanguageContext';
@@ -28,7 +28,7 @@ export default function SeasonStats({ platform, playerId, seasonId }) {
     enabled: !!seasonId,
   });
 
-  if (isLoading) return <PageLoader />;
+  if (isLoading) return <PlayerStatsSkeleton />;
   if (error) return <ErrorMessage error={error} onRetry={refetch} />;
   if (!data) return null;
 

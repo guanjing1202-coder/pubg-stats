@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { pubgApi } from '../../utils/api';
-import { PageLoader } from '../common/LoadingSpinner';
+import { SurvivalMasterySkeleton } from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
 import { formatNumber, formatTime, formatDistance } from '../../utils/formatters';
 import { Info, Shield, Activity } from 'lucide-react';
@@ -43,7 +43,7 @@ export default function SurvivalMastery({ platform, playerId }) {
     queryFn: () => pubgApi.getLifetimeStats(platform, playerId),
   });
 
-  if (smLoading) return <PageLoader />;
+  if (smLoading) return <SurvivalMasterySkeleton />;
   if (smError) return <ErrorMessage error={smError} onRetry={smRefetch} />;
 
   const attrs = smData?.data?.attributes || {};

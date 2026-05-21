@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { pubgApi } from '../../utils/api';
 import { extractPlayerStats, formatKDA, formatWinRate, formatAvgDamage } from '../../utils/formatters';
-import { PageLoader } from '../common/LoadingSpinner';
+import { RankedStatsSkeleton } from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
 import StatCard from '../common/StatCard';
 import { useLanguage } from '../../contexts/LanguageContext';
@@ -64,7 +64,7 @@ export default function RankedStats({ platform, playerId, seasonId }) {
     enabled: !!seasonId,
   });
 
-  if (isLoading) return <PageLoader />;
+  if (isLoading) return <RankedStatsSkeleton />;
   if (error) return <ErrorMessage error={error} onRetry={refetch} />;
 
   const rankedStats = data?.data?.attributes?.rankedGameModeStats || {};

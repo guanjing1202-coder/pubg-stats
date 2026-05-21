@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { pubgApi } from '../utils/api';
-import { PageLoader } from '../components/common/LoadingSpinner';
+import { LeaderboardSkeleton } from '../components/common/LoadingSpinner';
 import ErrorMessage from '../components/common/ErrorMessage';
 import { PLATFORM_REGIONS, GAME_MODES } from '../utils/constants';
 import { Link } from 'react-router-dom';
@@ -112,7 +112,7 @@ export default function Leaderboard() {
       </div>
 
       {/* Leaderboard table */}
-      {isLoading ? <PageLoader /> : error ? <ErrorMessage error={error} onRetry={refetch} /> : (
+      {isLoading ? <LeaderboardSkeleton /> : error ? <ErrorMessage error={error} onRetry={refetch} /> : (
         <div className="card overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[680px]">

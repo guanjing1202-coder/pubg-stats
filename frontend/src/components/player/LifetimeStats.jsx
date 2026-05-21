@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { pubgApi } from '../../utils/api';
 import { extractPlayerStats } from '../../utils/formatters';
 import StatsGrid from './StatsGrid';
-import { PageLoader } from '../common/LoadingSpinner';
+import { LifetimeStatsSkeleton } from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
 import { GAME_MODES } from '../../utils/constants';
 import { useLanguage } from '../../contexts/LanguageContext';
@@ -21,7 +21,7 @@ export default function LifetimeStats({ platform, playerId }) {
     queryFn: () => pubgApi.getLifetimeStats(platform, playerId),
   });
 
-  if (isLoading) return <PageLoader />;
+  if (isLoading) return <LifetimeStatsSkeleton />;
   if (error) return <ErrorMessage error={error} onRetry={refetch} />;
 
   const gameModeStats = data?.data?.attributes?.gameModeStats || {};

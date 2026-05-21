@@ -11,7 +11,7 @@ import RankedStats from '../components/player/RankedStats';
 import MatchHistory from '../components/player/MatchHistory';
 import WeaponMastery from '../components/weapon/WeaponMastery';
 import SurvivalMastery from '../components/player/SurvivalMastery';
-import { PageLoader } from '../components/common/LoadingSpinner';
+import { LifetimeStatsSkeleton, PlayerPageSkeleton } from '../components/common/LoadingSpinner';
 import ErrorMessage from '../components/common/ErrorMessage';
 
 const LifetimeStats = lazy(() => import('../components/player/LifetimeStats'));
@@ -66,7 +66,7 @@ export default function Player() {
   const currentSeason = seasons.find((s) => s.attributes?.isCurrentSeason);
   const effectiveSeason = selectedSeason || currentSeason?.id;
 
-  if (playerLoading) return <PageLoader />;
+  if (playerLoading) return <PlayerPageSkeleton />;
   if (playerError || !player) {
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
@@ -131,7 +131,7 @@ export default function Player() {
           {tab === 'season' && <SeasonStats platform={platform} playerId={playerId} seasonId={effectiveSeason} />}
           {tab === 'ranked' && <RankedStats platform={platform} playerId={playerId} seasonId={effectiveSeason} />}
           {tab === 'lifetime' && (
-            <Suspense fallback={<PageLoader />}>
+            <Suspense fallback={<LifetimeStatsSkeleton />}>
               <div className="space-y-5">
                 {seasons.length >= 2 && (
                   <SeasonTrend platform={platform} playerId={playerId} seasons={seasons} />
