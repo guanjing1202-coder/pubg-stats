@@ -3,7 +3,9 @@ import { useQuery } from '@tanstack/react-query';
 import { pubgApi } from '../utils/api';
 import { LeaderboardSkeleton } from '../components/common/LoadingSpinner';
 import ErrorMessage from '../components/common/ErrorMessage';
+import SelectField from '../components/common/SelectField';
 import { PLATFORM_REGIONS, GAME_MODES } from '../utils/constants';
+import { formatSeasonId } from '../utils/seasonLabels';
 import { Link } from 'react-router-dom';
 import { Medal, Trophy } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -55,6 +57,18 @@ export default function Leaderboard() {
   });
 
   const players = data?.included?.filter((i) => i.type === 'player') || [];
+  const regionOptions = PLATFORM_REGIONS.map((region) => ({
+    value: region.value,
+    label: region.label,
+  }));
+  const modeOptions = LEADERBOARD_MODES.map((mode) => ({
+    value: mode.value,
+    label: t(mode.labelKey),
+  }));
+  const seasonOptions = seasons.slice(0, 8).map((season) => ({
+    value: season.id,
+    label: `${formatSeasonId(season.id)}${season.attributes?.isCurrentSeason ? ` (${t('season_current')})` : ''}`,
+  }));
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-6 animate-fade-in">
@@ -72,42 +86,27 @@ export default function Leaderboard() {
       </div>
 
       {/* Filters */}
-      <div className="card p-4 flex flex-wrap gap-4">
-        <div>
-          <label className="block text-xs text-pubg-muted mb-1.5">
-            {t('leaderboard_region')}
-          </label>
-          <select value={platformRegion} onChange={(e) => setPlatformRegion(e.target.value)}
-            className="bg-pubg-dark border border-pubg-border text-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-pubg-orange">
-            {PLATFORM_REGIONS.map((r) => (
-              <option key={r.value} value={r.value} className="bg-pubg-dark">{r.label}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="block text-xs text-pubg-muted mb-1.5">{t('leaderboard_mode')}</label>
-          <select value={gameMode} onChange={(e) => setGameMode(e.target.value)}
-            className="bg-pubg-dark border border-pubg-border text-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-pubg-orange">
-            {LEADERBOARD_MODES.map((m) => (
-              <option key={m.value} value={m.value} className="bg-pubg-dark">
-                {t(m.labelKey)}
-              </option>
-            ))}
-          </select>
-        </div>
+      <div className="card p-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-[minmax(190px,1fr)_minmax(160px,0.8fr)_minmax(180px,0.9fr)]">
+        <SelectField
+          label={t('leaderboard_region')}
+          value={platformRegion}
+          onChange={(e) => setPlatformRegion(e.target.value)}
+          options={regionOptions}
+        />
+        <SelectField
+          label={t('leaderboard_mode')}
+          value={gameMode}
+          onChange={(e) => setGameMode(e.target.value)}
+          options={modeOptions}
+        />
         {seasons.length > 0 && (
-          <div>
-            <label className="block text-xs text-pubg-muted mb-1.5">{t('leaderboard_season')}</label>
-            <select value={effectiveSeason} onChange={(e) => setSeasonId(e.target.value)}
-              className="bg-pubg-dark border border-pubg-border text-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-pubg-orange">
-              {seasons.slice(0, 8).map((s) => (
-                <option key={s.id} value={s.id} className="bg-pubg-dark">
-                  {s.id.replace('division.bro.official.', '').replace('pc-2018-', 'Season ').replace('console-2018-', 'Season ')}
-                  {s.attributes?.isCurrentSeason ? ` (${t('season_current')})` : ''}
-                </option>
-              ))}
-            </select>
-          </div>
+          <SelectField
+            label={t('leaderboard_season')}
+            value={effectiveSeason}
+            onChange={(e) => setSeasonId(e.target.value)}
+            options={seasonOptions}
+            className="sm:col-span-2 lg:col-span-1"
+          />
         )}
       </div>
 

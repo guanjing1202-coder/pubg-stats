@@ -13,6 +13,7 @@ import WeaponMastery from '../components/weapon/WeaponMastery';
 import SurvivalMastery from '../components/player/SurvivalMastery';
 import { LifetimeStatsSkeleton, PlayerPageSkeleton } from '../components/common/LoadingSpinner';
 import ErrorMessage from '../components/common/ErrorMessage';
+import { formatSeasonId } from '../utils/seasonLabels';
 
 const LifetimeStats = lazy(() => import('../components/player/LifetimeStats'));
 const SeasonTrend = lazy(() => import('../components/player/SeasonTrend'));
@@ -96,9 +97,18 @@ export default function Player() {
 
       {/* Season selector (for season/ranked tabs) */}
       {(tab === 'season' || tab === 'ranked') && seasons.length > 0 && (
-        <div className="flex items-center gap-3 flex-wrap">
-          <span className="text-sm text-pubg-muted">{t('player_season_label')}</span>
-          <div className="flex items-center gap-1 flex-wrap">
+        <div className="card p-3">
+          <div className="flex items-center justify-between gap-3 mb-2">
+            <span className="text-xs font-medium uppercase tracking-wider text-pubg-muted">
+              {t('player_season_label')}
+            </span>
+            {currentSeason && (
+              <span className="text-[11px] text-pubg-muted">
+                {formatSeasonId(currentSeason.id)} {t('season_current')}
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
             {seasons.slice(0, 10).map((s) => {
               const isCurrent = s.attributes?.isCurrentSeason;
               const isSelected = effectiveSeason === s.id;
@@ -106,10 +116,14 @@ export default function Player() {
                 <button
                   key={s.id}
                   onClick={() => setSelectedSeason(s.id)}
-                  className={`text-xs px-2.5 py-1 rounded transition-colors ${isSelected ? 'bg-pubg-orange text-black font-semibold' : 'bg-pubg-card border border-pubg-border text-gray-400 hover:text-white'}`}
+                  className={`shrink-0 rounded-lg border px-3 py-1.5 text-xs font-medium transition-all active:scale-95 ${isSelected ? 'border-pubg-orange bg-pubg-orange text-black' : 'border-pubg-border bg-pubg-dark text-gray-400 hover:border-pubg-muted hover:text-white'}`}
                 >
-                  {s.id.replace('division.bro.official.', '').replace('pc-2018-', 'S').replace('console-2018-', 'S')}
-                  {isCurrent && ' ★'}
+                  {formatSeasonId(s.id)}
+                  {isCurrent && (
+                    <span className={`ml-1.5 rounded px-1 py-0.5 text-[10px] ${isSelected ? 'bg-black/15 text-black' : 'bg-pubg-border text-pubg-muted'}`}>
+                      {t('season_current')}
+                    </span>
+                  )}
                 </button>
               );
             })}
