@@ -5,6 +5,7 @@ import ErrorMessage from '../common/ErrorMessage';
 import { formatNumber } from '../../utils/formatters';
 import { useState } from 'react';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { Swords } from 'lucide-react';
 
 // Map internal weapon IDs to display names
 const WEAPON_NAMES = {
@@ -233,7 +234,9 @@ export default function WeaponMastery({ platform, playerId }) {
         </>
       ) : (
         <div className="text-center py-16 text-pubg-muted">
-          <p className="text-4xl mb-3">🔫</p>
+          <div className="mx-auto mb-3 w-14 h-14 rounded-2xl bg-pubg-border/30 border border-pubg-border flex items-center justify-center">
+            <Swords size={26} className="text-pubg-muted" />
+          </div>
           <p>{t('weapon_no_data')}</p>
         </div>
       )}

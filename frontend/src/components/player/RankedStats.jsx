@@ -6,6 +6,7 @@ import { PageLoader } from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
 import StatCard from '../common/StatCard';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { Award, BadgeCent, Crown, Diamond, Trophy } from 'lucide-react';
 
 const RANKED_MODES = [
   { value: 'squad', labelKey: 'ranked_mode_squad' },
@@ -23,13 +24,24 @@ const TIER_COLORS = {
   'Grand Master': 'text-red-400',
 };
 
+const TIER_ICONS = {
+  Bronze: BadgeCent,
+  Silver: Award,
+  Gold: Trophy,
+  Platinum: Diamond,
+  Diamond: Diamond,
+  Master: Crown,
+  'Grand Master': Crown,
+};
+
 function RankDisplay({ tier, subTier, rankPoints }) {
   const tierColor = TIER_COLORS[tier] || 'text-white';
+  const Icon = TIER_ICONS[tier] || Trophy;
+
   return (
     <div className="card p-6 flex flex-col items-center gap-3 text-center">
-      <div className={`text-6xl font-black ${tierColor}`}>
-        {tier === 'Bronze' ? '🥉' : tier === 'Silver' ? '🥈' : tier === 'Gold' ? '🥇' :
-         tier === 'Platinum' ? '💎' : tier === 'Diamond' ? '💠' : tier === 'Master' ? '👑' : '🏆'}
+      <div className={`w-16 h-16 rounded-2xl border border-pubg-border/70 bg-pubg-border/30 flex items-center justify-center ${tierColor}`}>
+        <Icon size={34} />
       </div>
       <div>
         <div className={`text-2xl font-bold ${tierColor}`}>{tier}</div>
@@ -106,7 +118,9 @@ export default function RankedStats({ platform, playerId, seasonId }) {
         </div>
       ) : (
         <div className="text-center py-16 text-pubg-muted">
-          <p className="text-4xl mb-3">🏆</p>
+          <div className="mx-auto mb-3 w-14 h-14 rounded-2xl bg-pubg-border/30 border border-pubg-border flex items-center justify-center">
+            <Trophy size={26} className="text-pubg-muted" />
+          </div>
           <p>{t('ranked_no_data')}</p>
         </div>
       )}

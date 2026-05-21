@@ -7,6 +7,7 @@ import { PageLoader } from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
 import { GAME_MODES } from '../../utils/constants';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { BarChart3 } from 'lucide-react';
 import {
   RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer, Tooltip,
 } from 'recharts';
@@ -73,7 +74,9 @@ export default function LifetimeStats({ platform, playerId }) {
         </div>
       ) : (
         <div className="text-center py-16 text-pubg-muted">
-          <p className="text-4xl mb-3">📊</p>
+          <div className="mx-auto mb-3 w-14 h-14 rounded-2xl bg-pubg-border/30 border border-pubg-border flex items-center justify-center">
+            <BarChart3 size={26} className="text-pubg-muted" />
+          </div>
           <p>{t('lifetime_no_data')}</p>
         </div>
       )}

@@ -4,7 +4,7 @@ import SearchBar from '../components/search/SearchBar';
 import { pubgApi } from '../utils/api';
 import { useRecentSearches, useFavorites } from '../hooks/useLocalStorage';
 import { useLanguage } from '../contexts/LanguageContext';
-import { Server, Clock, Star, X, ChevronRight } from 'lucide-react';
+import { BarChart3, ClipboardList, Crosshair, Server, Shield, Swords, Clock, Star, Trophy, X, ChevronRight } from 'lucide-react';
 
 function PlayerLink({ name, platform, onRemove, icon }) {
   const Icon = icon;
@@ -43,12 +43,12 @@ export default function Home() {
   const apiOnline = !!status?.data?.id;
 
   const FEATURES = [
-    { icon: '🎯', titleKey: 'home_feature_season_title', descKey: 'home_feature_season_desc' },
-    { icon: '🏆', titleKey: 'home_feature_ranked_title', descKey: 'home_feature_ranked_desc' },
-    { icon: '📊', titleKey: 'home_feature_lifetime_title', descKey: 'home_feature_lifetime_desc' },
-    { icon: '🔫', titleKey: 'home_feature_weapons_title', descKey: 'home_feature_weapons_desc' },
-    { icon: '🛡️', titleKey: 'home_feature_survival_title', descKey: 'home_feature_survival_desc' },
-    { icon: '📋', titleKey: 'home_feature_matches_title', descKey: 'home_feature_matches_desc' },
+    { Icon: Crosshair, titleKey: 'home_feature_season_title', descKey: 'home_feature_season_desc' },
+    { Icon: Trophy, titleKey: 'home_feature_ranked_title', descKey: 'home_feature_ranked_desc' },
+    { Icon: BarChart3, titleKey: 'home_feature_lifetime_title', descKey: 'home_feature_lifetime_desc' },
+    { Icon: Swords, titleKey: 'home_feature_weapons_title', descKey: 'home_feature_weapons_desc' },
+    { Icon: Shield, titleKey: 'home_feature_survival_title', descKey: 'home_feature_survival_desc' },
+    { Icon: ClipboardList, titleKey: 'home_feature_matches_title', descKey: 'home_feature_matches_desc' },
   ];
 
   return (
@@ -137,9 +137,11 @@ export default function Home() {
           <p className="text-pubg-muted text-sm">{t('home_full_data_sub')}</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {FEATURES.map((f) => (
+          {FEATURES.map(({ Icon, ...f }) => (
             <div key={f.titleKey} className="card p-5 hover:border-pubg-orange/40 transition-all group">
-              <div className="text-3xl mb-3">{f.icon}</div>
+              <div className="w-10 h-10 rounded-lg border border-pubg-orange/20 bg-pubg-orange/10 flex items-center justify-center mb-3 group-hover:border-pubg-orange/40 transition-colors">
+                <Icon size={20} className="text-pubg-orange" />
+              </div>
               <h3 className="font-semibold text-white mb-1 group-hover:text-pubg-orange transition-colors">{t(f.titleKey)}</h3>
               <p className="text-sm text-pubg-muted">{t(f.descKey)}</p>
             </div>

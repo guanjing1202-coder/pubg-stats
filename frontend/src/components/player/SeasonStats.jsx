@@ -7,6 +7,7 @@ import { PageLoader } from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
 import { GAME_MODES } from '../../utils/constants';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { Gamepad2 } from 'lucide-react';
 
 const MODE_KEYS = {
   squad: 'squad',
@@ -54,7 +55,9 @@ export default function SeasonStats({ platform, playerId, seasonId }) {
         <StatsGrid stats={parsed} />
       ) : (
         <div className="text-center py-16 text-pubg-muted">
-          <p className="text-4xl mb-3">🎮</p>
+          <div className="mx-auto mb-3 w-14 h-14 rounded-2xl bg-pubg-border/30 border border-pubg-border flex items-center justify-center">
+            <Gamepad2 size={26} className="text-pubg-muted" />
+          </div>
           <p>{t('season_no_data')}</p>
         </div>
       )}

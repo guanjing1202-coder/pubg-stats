@@ -1,9 +1,14 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Clock, X } from 'lucide-react';
+import { ChevronDown, Gamepad2, Monitor, Search, Clock, X } from 'lucide-react';
 import { PLATFORMS } from '../../utils/constants';
 import { useRecentSearches } from '../../hooks/useLocalStorage';
 import { useLanguage } from '../../contexts/LanguageContext';
+
+function PlatformIcon({ type, className = 'text-pubg-muted' }) {
+  const Icon = type === 'console' ? Gamepad2 : Monitor;
+  return <Icon size={14} className={className} />;
+}
 
 export default function SearchBar({ compact = false, large = false, onSearch }) {
   const [name, setName] = useState('');
@@ -47,6 +52,7 @@ export default function SearchBar({ compact = false, large = false, onSearch }) 
   const filteredHistory = name
     ? searches.filter((s) => s.name.toLowerCase().includes(name.toLowerCase()))
     : searches;
+  const selectedPlatform = PLATFORMS.find((p) => p.value === platform) || PLATFORMS[0];
 
   if (compact) {
     return (
@@ -96,12 +102,19 @@ export default function SearchBar({ compact = false, large = false, onSearch }) 
     <div ref={wrapperRef} className="relative w-full">
       <form onSubmit={handleSubmit} className="w-full">
         <div className={`flex flex-col sm:flex-row gap-3 ${large ? 'max-w-2xl mx-auto' : ''}`}>
-          <select value={platform} onChange={(e) => setPlatform(e.target.value)}
-            className="bg-pubg-card border border-pubg-border text-gray-300 rounded-xl px-4 py-3 outline-none focus:border-pubg-orange transition-colors sm:w-44 text-sm">
-            {PLATFORMS.map((p) => (
-              <option key={p.value} value={p.value} className="bg-pubg-dark">{p.icon} {p.label}</option>
-            ))}
-          </select>
+          <div className="relative sm:w-44">
+            <PlatformIcon
+              type={selectedPlatform.iconType}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-pubg-orange pointer-events-none"
+            />
+            <select value={platform} onChange={(e) => setPlatform(e.target.value)}
+              className="w-full bg-pubg-card border border-pubg-border text-gray-300 rounded-xl pl-10 pr-9 py-3 outline-none focus:border-pubg-orange transition-colors text-sm appearance-none">
+              {PLATFORMS.map((p) => (
+                <option key={p.value} value={p.value} className="bg-pubg-dark">{p.label}</option>
+              ))}
+            </select>
+            <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-pubg-muted pointer-events-none" />
+          </div>
           <div className="flex-1 flex items-center bg-pubg-card border border-pubg-border rounded-xl overflow-hidden focus-within:border-pubg-orange transition-colors">
             <Search size={18} className="ml-4 text-pubg-muted shrink-0" />
             <input type="text" value={name} onChange={(e) => setName(e.target.value)}

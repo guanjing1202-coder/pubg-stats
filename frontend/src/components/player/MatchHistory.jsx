@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ChevronRight, Trophy, Target, Zap, Clock, User } from 'lucide-react';
+import { ChevronRight, Trophy, Target, Zap, Clock, User, Gamepad2 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { pubgApi } from '../../utils/api';
 import { getMapName, formatDateTime } from '../../utils/formatters';
@@ -149,7 +149,9 @@ export default function MatchHistory({ player, platform }) {
   if (matches.length === 0) {
     return (
       <div className="text-center py-16 text-pubg-muted">
-        <p className="text-5xl mb-4">🎮</p>
+        <div className="mx-auto mb-4 w-16 h-16 rounded-2xl bg-pubg-border/30 border border-pubg-border flex items-center justify-center">
+          <Gamepad2 size={30} className="text-pubg-muted" />
+        </div>
         <p className="font-medium text-gray-400 mb-1">{t('match_history_empty')}</p>
         <p className="text-sm">{t('match_history_empty_sub')}</p>
       </div>

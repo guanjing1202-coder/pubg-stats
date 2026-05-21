@@ -1,9 +1,14 @@
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { User, Clock, Hash, ShieldCheck, ShieldAlert, ShieldX, Users } from 'lucide-react';
+import { Gamepad2, Monitor, User, Clock, Hash, ShieldCheck, ShieldAlert, ShieldX, Users } from 'lucide-react';
 import { getPlatformLabel, formatDateTime } from '../../utils/formatters';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { pubgApi } from '../../utils/api';
+
+function PlatformIcon({ platform }) {
+  const Icon = ['psn', 'xbox', 'console'].includes(platform) ? Gamepad2 : Monitor;
+  return <Icon size={12} />;
+}
 
 const BAN_STYLES = {
   Innocent:         { style: 'bg-green-500/15 border-green-500/30 text-green-400',   Icon: ShieldCheck, key: 'ban_innocent' },
@@ -73,7 +78,8 @@ export default function PlayerHeader({ player, platform }) {
                 <span className="font-mono text-xs">{id.slice(0, 16)}…</span>
               </span>
               <span className="flex items-center gap-1">
-                🖥️ {getPlatformLabel(platform)}
+                <PlatformIcon platform={platform} />
+                {getPlatformLabel(platform)}
               </span>
               {attrs.updatedAt && (
                 <span className="flex items-center gap-1">

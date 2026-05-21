@@ -1,10 +1,10 @@
 export const PLATFORMS = [
-  { value: 'steam', label: 'Steam (PC)', icon: '🖥️' },
-  { value: 'psn', label: 'PlayStation', icon: '🎮' },
-  { value: 'xbox', label: 'Xbox', icon: '🎮' },
-  { value: 'kakao', label: 'Kakao', icon: '🖥️' },
-  { value: 'console', label: 'Console', icon: '🎮' },
-  { value: 'stadia', label: 'Stadia', icon: '🖥️' },
+  { value: 'steam', label: 'Steam (PC)', iconType: 'pc' },
+  { value: 'psn', label: 'PlayStation', iconType: 'console' },
+  { value: 'xbox', label: 'Xbox', iconType: 'console' },
+  { value: 'kakao', label: 'Kakao', iconType: 'pc' },
+  { value: 'console', label: 'Console', iconType: 'console' },
+  { value: 'stadia', label: 'Stadia', iconType: 'pc' },
 ];
 
 export const PLATFORM_REGIONS = [

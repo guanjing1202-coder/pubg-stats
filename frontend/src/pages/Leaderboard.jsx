@@ -5,23 +5,38 @@ import { PageLoader } from '../components/common/LoadingSpinner';
 import ErrorMessage from '../components/common/ErrorMessage';
 import { PLATFORM_REGIONS, GAME_MODES } from '../utils/constants';
 import { Link } from 'react-router-dom';
-import { Trophy } from 'lucide-react';
+import { Medal, Trophy } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const LEADERBOARD_MODES = GAME_MODES.filter((m) => !m.value.includes('fpp') || m.value === 'squad-fpp');
 
 function RankIcon({ rank }) {
-  if (rank === 1) return <span className="text-yellow-400">🥇</span>;
-  if (rank === 2) return <span className="text-gray-300">🥈</span>;
-  if (rank === 3) return <span className="text-amber-600">🥉</span>;
-  return <span className="text-pubg-muted font-mono text-sm">{rank}</span>;
+  const topStyles = {
+    1: 'bg-yellow-500/15 border-yellow-500/40 text-yellow-400',
+    2: 'bg-gray-400/10 border-gray-400/30 text-gray-300',
+    3: 'bg-amber-700/15 border-amber-600/40 text-amber-500',
+  };
+
+  if (topStyles[rank]) {
+    return (
+      <span className={`inline-flex h-8 w-8 items-center justify-center rounded-lg border ${topStyles[rank]}`}>
+        <Medal size={15} />
+      </span>
+    );
+  }
+
+  return (
+    <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-pubg-border/30 text-pubg-muted font-mono text-sm">
+      {rank}
+    </span>
+  );
 }
 
 export default function Leaderboard() {
   const [platformRegion, setPlatformRegion] = useState('pc-as');
   const [gameMode, setGameMode] = useState('squad');
   const [seasonId, setSeasonId] = useState('');
-  const { t, lang } = useLanguage();
+  const { t } = useLanguage();
 
   const platform = platformRegion.split('-')[0] === 'pc' ? 'steam' : 'xbox';
   const { data: seasonsData } = useQuery({
@@ -100,7 +115,7 @@ export default function Leaderboard() {
       {isLoading ? <PageLoader /> : error ? <ErrorMessage error={error} onRetry={refetch} /> : (
         <div className="card overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full min-w-[680px]">
               <thead>
                 <tr className="text-xs text-pubg-muted uppercase tracking-wider border-b border-pubg-border">
                   <th className="px-4 py-3 text-left w-16">{t('leaderboard_rank')}</th>
@@ -115,8 +130,10 @@ export default function Leaderboard() {
               <tbody>
                 {players.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="text-center py-12 text-pubg-muted">
-                      {t('leaderboard_no_data')}
+                    <td colSpan={7} className="py-12 text-pubg-muted">
+                      <div className="sticky left-0 w-screen max-w-[calc(100vw-2rem)] text-center">
+                        {t('leaderboard_no_data')}
+                      </div>
                     </td>
                   </tr>
                 ) : (
