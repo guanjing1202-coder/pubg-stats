@@ -155,6 +155,118 @@ export function PlayerPageSkeleton() {
   );
 }
 
+export function ClanPageSkeleton() {
+  return (
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 space-y-5 animate-fade-in" aria-hidden="true">
+      <div className="skeleton h-5 w-24 rounded" />
+
+      <section className="card overflow-hidden">
+        <div className="h-28 bg-gradient-to-r from-pubg-darker via-pubg-dark to-pubg-card relative overflow-hidden">
+          <div className="absolute inset-0 skeleton rounded-none opacity-60" />
+        </div>
+        <div className="px-5 pb-5 -mt-7 relative">
+          <div className="skeleton w-16 h-16 rounded-xl mb-4" />
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <div className="skeleton h-6 w-16 rounded-md" />
+                <div className="skeleton h-9 w-48 rounded-md" />
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <SkeletonLine className="w-52" />
+                <SkeletonLine className="w-16" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        {Array.from({ length: LOADING_SKELETON_COUNTS.clanStats }).map((_, index) => (
+          <div key={index} className="card p-4 min-h-[92px]">
+            <SkeletonLine className="w-24" />
+            <div className="skeleton h-8 w-20 rounded-md mt-4" />
+          </div>
+        ))}
+      </section>
+    </div>
+  );
+}
+
+export function MatchDetailSkeleton() {
+  return (
+    <div className="space-y-5 animate-fade-in" aria-hidden="true">
+      <div className="card p-5">
+        <div className="flex flex-wrap items-center gap-4 mb-4">
+          <div className="space-y-3">
+            <div className="skeleton h-7 w-44 rounded-md" />
+            <SkeletonLine className="w-36" />
+          </div>
+          <div className="skeleton h-6 w-20 rounded" />
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div key={index} className="flex items-center gap-2">
+              <div className="skeleton h-4 w-4 rounded" />
+              <SkeletonLine className="w-16" />
+              <SkeletonLine className="w-20" />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="card p-4 space-y-4">
+        <div className="flex items-center justify-between gap-4">
+          <SkeletonLine className="w-40" />
+          <div className="skeleton h-8 w-28 rounded-lg" />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <div key={index} className="rounded-lg border border-pubg-border/60 p-3">
+              <SkeletonLine className="w-20" />
+              <div className="skeleton h-7 w-16 rounded-md mt-3" />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <ModeTabsSkeleton count={2} />
+
+      <div className="space-y-2">
+        {Array.from({ length: LOADING_SKELETON_COUNTS.matchTeams }).map((_, teamIndex) => (
+          <div key={teamIndex} className="card overflow-hidden">
+            <div className="flex items-center justify-between gap-4 px-4 py-3">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="skeleton h-7 w-8 rounded" />
+                <div className="min-w-0 space-y-2">
+                  <SkeletonLine className={`${teamIndex % 2 === 0 ? 'w-52' : 'w-40'} max-w-full`} />
+                  <SkeletonLine className="w-24 h-2.5" />
+                </div>
+              </div>
+              <div className="skeleton h-4 w-4 rounded" />
+            </div>
+            {teamIndex < 2 && (
+              <div className="border-t border-pubg-border px-4 py-3 space-y-3">
+                {Array.from({ length: LOADING_SKELETON_COUNTS.matchParticipantRows }).map((__, rowIndex) => (
+                  <div key={rowIndex} className="grid grid-cols-[1fr_repeat(4,48px)] items-center gap-3">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <div className="skeleton h-5 w-8 rounded" />
+                      <SkeletonLine className="w-28" />
+                    </div>
+                    {Array.from({ length: 4 }).map((___, cellIndex) => (
+                      <SkeletonLine key={cellIndex} className="w-10 justify-self-center" />
+                    ))}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function PlayerStatsSkeleton() {
   return (
     <div className="space-y-5 animate-fade-in" aria-hidden="true">

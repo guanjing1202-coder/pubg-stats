@@ -10,4 +10,7 @@ test('loading skeletons mirror the main data surfaces', () => {
   assert.equal(LOADING_SKELETON_COUNTS.leaderboardRows, 8);
   assert.equal(LOADING_SKELETON_COUNTS.playerTabs, 6);
   assert.equal(LOADING_SKELETON_COUNTS.statCards, 12);
+  assert.equal(LOADING_SKELETON_COUNTS.clanStats, 3);
+  assert.equal(LOADING_SKELETON_COUNTS.matchTeams, 6);
+  assert.equal(LOADING_SKELETON_COUNTS.matchParticipantRows, 4);
 });

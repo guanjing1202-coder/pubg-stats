@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { pubgApi } from '../../utils/api';
-import { PageLoader } from '../common/LoadingSpinner';
+import { MatchDetailSkeleton } from '../common/LoadingSpinner';
 import ErrorMessage from '../common/ErrorMessage';
 import { getMapName, formatDateTime, formatTime } from '../../utils/formatters';
 import Badge from '../common/Badge';
@@ -117,7 +117,7 @@ export default function MatchDetail({ platform, matchId, highlightPlayerName }) 
     queryFn: () => pubgApi.getMatch(platform, matchId),
   });
 
-  if (isLoading) return <PageLoader />;
+  if (isLoading) return <MatchDetailSkeleton />;
   if (error) return <ErrorMessage error={error} onRetry={refetch} />;
 
   const match = data?.data;

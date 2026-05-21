@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ArrowLeft, Hash, Shield, Users } from 'lucide-react';
 import { pubgApi } from '../utils/api';
 import { useLanguage } from '../contexts/LanguageContext';
-import { PageLoader } from '../components/common/LoadingSpinner';
+import { ClanPageSkeleton } from '../components/common/LoadingSpinner';
 import ErrorMessage from '../components/common/ErrorMessage';
 
 export default function Clan() {
@@ -17,7 +17,7 @@ export default function Clan() {
     staleTime: 60 * 60 * 1000,
   });
 
-  if (isLoading) return <PageLoader />;
+  if (isLoading) return <ClanPageSkeleton />;
   if (error) {
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">

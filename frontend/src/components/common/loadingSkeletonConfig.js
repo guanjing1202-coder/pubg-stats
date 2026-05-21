@@ -15,4 +15,7 @@ export const LOADING_SKELETON_COUNTS = {
   rankedTierCards: 2,
   weaponCards: 8,
   survivalRows: 12,
+  clanStats: 3,
+  matchTeams: 6,
+  matchParticipantRows: 4,
 };
