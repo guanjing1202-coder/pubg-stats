@@ -134,6 +134,36 @@ start.bat
 
 `start.bat` 会分别打开后端和前端终端窗口，自动安装依赖并启动开发服务。
 
+## Docker Compose 部署
+
+先根据 `backend/.env.example` 创建本机 `backend/.env`，并填入 `PUBG_API_KEY`。该文件已被 `.gitignore` 和 Docker 构建上下文忽略，不应提交到仓库。
+
+构建并启动：
+
+```bash
+docker compose up -d --build
+```
+
+Compose 只暴露一个宿主机端口：
+
+```text
+http://localhost:18080
+```
+
+容器内由 nginx 托管前端静态文件，并将 `/api` 和 `/health` 反向代理到后端 `backend:3001`。React Router 的前端路由由 nginx history fallback 支持。
+
+健康检查：
+
+```text
+http://localhost:18080/health
+```
+
+停止服务：
+
+```bash
+docker compose down
+```
+
 ## 页面路由
 
 | 路径 | 页面 |
