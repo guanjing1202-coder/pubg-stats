@@ -30,7 +30,7 @@ export default function Navbar() {
             <div className="font-black text-white text-base leading-none tracking-wide">
               GJ <span className="text-pubg-orange">STATS</span>
             </div>
-            <div className="text-[10px] text-pubg-muted tracking-widest leading-none mt-0.5">PUBG TRACKER</div>
+            <div className="text-[10px] text-pubg-muted tracking-widest leading-none mt-0.5">{t('navbar_brand_subtitle')}</div>
           </div>
         </Link>
 

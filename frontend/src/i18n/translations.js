@@ -3,6 +3,7 @@ export const translations = {
     // Nav
     nav_stats: '战绩',
     nav_leaderboard: '排行榜',
+    navbar_brand_subtitle: 'PUBG 数据追踪',
 
     // Search
     search_placeholder_compact: '输入玩家ID...',
@@ -10,13 +11,35 @@ export const translations = {
     search_button: '搜索',
     search_recent: '最近搜索',
 
+    // Platforms and regions
+    platform_steam: 'Steam（PC）',
+    platform_psn: 'PlayStation',
+    platform_xbox: 'Xbox',
+    platform_kakao: 'Kakao',
+    platform_console: '主机',
+    platform_stadia: 'Stadia',
+    region_pc_as: 'PC - 亚洲',
+    region_pc_eu: 'PC - 欧洲',
+    region_pc_na: 'PC - 北美',
+    region_pc_oc: 'PC - 大洋洲',
+    region_pc_ru: 'PC - 俄罗斯',
+    region_pc_sa: 'PC - 南美',
+    region_pc_sea: 'PC - 东南亚',
+    region_pc_kakao: 'PC - Kakao',
+    region_xbox_as: 'Xbox - 亚洲',
+    region_xbox_eu: 'Xbox - 欧洲',
+    region_xbox_na: 'Xbox - 北美',
+    region_xbox_oc: 'Xbox - 大洋洲',
+    region_xbox_sa: 'Xbox - 南美',
+
     // Home
     home_api_status_ok: 'PUBG API 正常运行',
     home_api_status_loading: 'PUBG API 连接中...',
     home_api_status_offline: '后端服务未连接',
     home_api_status_degraded: 'PUBG API 状态异常',
-    home_tagline: 'PUBG Tracker & Analytics',
-    home_subtitle: 'Search players · Season stats · Ranked · Weapon mastery · Match history',
+    home_byline: '由 GUAN JING 制作',
+    home_tagline: 'PUBG 战绩追踪与数据分析',
+    home_subtitle: '搜索玩家 · 赛季战绩 · 排位数据 · 武器精通 · 对局记录',
     home_recent_searches: '最近搜索',
     home_clear: '清除',
     home_favorites: '收藏玩家',
@@ -25,7 +48,8 @@ export const translations = {
     home_stat_maps: '支持地图',
     home_stat_modes: '游戏模式',
     home_stat_matches: '最近对局',
-    home_stat_global: '全球排行',
+    home_stat_global_value: '前500',
+    home_stat_global: '全球前500',
     home_feature_season_title: '赛季战绩',
     home_feature_season_desc: '当前及历史赛季多模式详细数据',
     home_feature_ranked_title: '段位排名',
@@ -35,7 +59,7 @@ export const translations = {
     home_feature_weapons_title: '武器精通',
     home_feature_weapons_desc: '击杀数、爆头率、最远击杀、等级',
     home_feature_survival_title: '生存精通',
-    home_feature_survival_desc: '生存等级、Tier、当场及历史数据',
+    home_feature_survival_desc: '生存等级、层级、单场及历史数据',
     home_feature_matches_title: '对局详情',
     home_feature_matches_desc: '最近32场完整参赛者排行与数据',
 
@@ -274,12 +298,14 @@ export const translations = {
     not_found_action: '回到安全区',
 
     // Footer
-    footer_unofficial: 'Unofficial tool · Data sourced from',
-    footer_trademark: '· PUBG is a registered trademark of KRAFTON, Inc.',
+    footer_byline: 'GUAN JING 出品',
+    footer_unofficial: '非官方工具 · 数据来源',
+    footer_api_label: 'PUBG 开发者 API',
+    footer_trademark: '· PUBG 是 KRAFTON, Inc. 的注册商标。',
 
     // Leaderboard
     leaderboard_title: '全球排行榜',
-    leaderboard_subtitle: '每 2 小时更新一次，当前赛季 Top 500',
+    leaderboard_subtitle: '每 2 小时更新一次，当前赛季前 500',
     leaderboard_region: '区域',
     leaderboard_mode: '模式',
     leaderboard_season: '赛季',
@@ -297,6 +323,7 @@ export const translations = {
     // Nav
     nav_stats: 'Stats',
     nav_leaderboard: 'Leaderboard',
+    navbar_brand_subtitle: 'PUBG TRACKER',
 
     // Search
     search_placeholder_compact: 'Enter player ID...',
@@ -304,11 +331,33 @@ export const translations = {
     search_button: 'Search',
     search_recent: 'Recent searches',
 
+    // Platforms and regions
+    platform_steam: 'Steam (PC)',
+    platform_psn: 'PlayStation',
+    platform_xbox: 'Xbox',
+    platform_kakao: 'Kakao',
+    platform_console: 'Console',
+    platform_stadia: 'Stadia',
+    region_pc_as: 'PC - Asia',
+    region_pc_eu: 'PC - Europe',
+    region_pc_na: 'PC - North America',
+    region_pc_oc: 'PC - Oceania',
+    region_pc_ru: 'PC - Russia',
+    region_pc_sa: 'PC - South America',
+    region_pc_sea: 'PC - SEA',
+    region_pc_kakao: 'PC - Kakao',
+    region_xbox_as: 'Xbox - Asia',
+    region_xbox_eu: 'Xbox - Europe',
+    region_xbox_na: 'Xbox - North America',
+    region_xbox_oc: 'Xbox - Oceania',
+    region_xbox_sa: 'Xbox - South America',
+
     // Home
     home_api_status_ok: 'PUBG API Online',
     home_api_status_loading: 'PUBG API Connecting...',
     home_api_status_offline: 'Backend Not Connected',
     home_api_status_degraded: 'PUBG API Degraded',
+    home_byline: 'By Guan Jing',
     home_tagline: 'PUBG Tracker & Analytics',
     home_subtitle: 'Search players · Season stats · Ranked · Weapon mastery · Match history',
     home_recent_searches: 'Recent Searches',
@@ -319,6 +368,7 @@ export const translations = {
     home_stat_maps: 'Maps',
     home_stat_modes: 'Modes',
     home_stat_matches: 'Recent Matches',
+    home_stat_global_value: 'Top500',
     home_stat_global: 'Global Rank',
     home_feature_season_title: 'Season Stats',
     home_feature_season_desc: 'Detailed multi-mode stats for current and past seasons',
@@ -568,7 +618,9 @@ export const translations = {
     not_found_action: 'Back to Safety',
 
     // Footer
+    footer_byline: 'by Guan Jing',
     footer_unofficial: 'Unofficial tool · Data sourced from',
+    footer_api_label: 'PUBG Developer API',
     footer_trademark: '· PUBG is a registered trademark of KRAFTON, Inc.',
 
     // Leaderboard

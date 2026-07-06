@@ -14,13 +14,13 @@ export default function Footer() {
             </svg>
             <div>
               <div className="font-black text-white text-sm tracking-wide">GJ <span className="text-pubg-orange">STATS</span></div>
-              <div className="text-[10px] text-pubg-muted tracking-widest">by Guan Jing</div>
+              <div className="text-[10px] text-pubg-muted tracking-widest">{t('footer_byline')}</div>
             </div>
           </div>
           <p className="text-xs text-pubg-muted text-center">
             {t('footer_unofficial')}{' '}
             <a href="https://developer.pubg.com" target="_blank" rel="noopener noreferrer" className="text-pubg-orange hover:underline">
-              PUBG Developer API
+              {t('footer_api_label')}
             </a>
             {' '}{t('footer_trademark')}
           </p>

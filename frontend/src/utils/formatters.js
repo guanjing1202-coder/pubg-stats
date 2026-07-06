@@ -1,4 +1,4 @@
-import { MAP_NAMES } from './constants';
+import { MAP_NAMES, PLATFORMS } from './constants';
 
 export function formatKDA(kills, deaths, assists) {
   const d = Math.max(deaths, 1);
@@ -69,9 +69,19 @@ export function getRankTier(tier, subTier) {
   return subTier ? `${tier} ${subTier}` : tier;
 }
 
-export function getPlatformLabel(platform) {
-  const map = { steam: 'Steam', psn: 'PlayStation', xbox: 'Xbox', kakao: 'Kakao', stadia: 'Stadia' };
-  return map[platform] || platform;
+export function getPlatformLabel(platform, t) {
+  const meta = PLATFORMS.find((item) => item.value === platform);
+  if (meta?.labelKey && t) return t(meta.labelKey);
+
+  const fallback = {
+    steam: 'Steam (PC)',
+    psn: 'PlayStation',
+    xbox: 'Xbox',
+    kakao: 'Kakao',
+    console: 'Console',
+    stadia: 'Stadia',
+  };
+  return fallback[platform] || platform;
 }
 
 export function extractPlayerStats(statsObj) {

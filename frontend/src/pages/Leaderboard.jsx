@@ -59,7 +59,7 @@ export default function Leaderboard() {
   const players = data?.included?.filter((i) => i.type === 'player') || [];
   const regionOptions = PLATFORM_REGIONS.map((region) => ({
     value: region.value,
-    label: region.label,
+    label: t(region.labelKey),
   }));
   const modeOptions = LEADERBOARD_MODES.map((mode) => ({
     value: mode.value,

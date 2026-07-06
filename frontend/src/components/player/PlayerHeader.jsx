@@ -79,7 +79,7 @@ export default function PlayerHeader({ player, platform }) {
               </span>
               <span className="flex items-center gap-1">
                 <PlatformIcon platform={platform} />
-                {getPlatformLabel(platform)}
+                {getPlatformLabel(platform, t)}
               </span>
               {attrs.updatedAt && (
                 <span className="flex items-center gap-1">

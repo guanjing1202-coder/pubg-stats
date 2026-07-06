@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ArrowLeft, Hash, Shield, Users } from 'lucide-react';
 import { pubgApi } from '../utils/api';
 import { useLanguage } from '../contexts/LanguageContext';
+import { getPlatformLabel } from '../utils/formatters';
 import { ClanPageSkeleton } from '../components/common/LoadingSpinner';
 import ErrorMessage from '../components/common/ErrorMessage';
 
@@ -62,7 +63,7 @@ export default function Clan() {
                   <Hash size={12} />
                   <span className="font-mono text-xs">{decodedClanId}</span>
                 </span>
-                <span>{platform}</span>
+                <span>{getPlatformLabel(platform, t)}</span>
               </div>
             </div>
           </div>

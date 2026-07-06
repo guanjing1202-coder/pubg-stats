@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronDown, Gamepad2, Monitor, Search, Clock, X } from 'lucide-react';
 import { PLATFORMS } from '../../utils/constants';
+import { getPlatformLabel } from '../../utils/formatters';
 import { useRecentSearches } from '../../hooks/useLocalStorage';
 import { useLanguage } from '../../contexts/LanguageContext';
 
@@ -62,7 +63,7 @@ export default function SearchBar({ compact = false, large = false, onSearch }) 
             <select value={platform} onChange={(e) => setPlatform(e.target.value)}
               className="bg-transparent text-gray-300 text-sm px-2 py-2 outline-none border-r border-pubg-border shrink-0">
               {PLATFORMS.map((p) => (
-                <option key={p.value} value={p.value} className="bg-pubg-dark">{p.label}</option>
+                <option key={p.value} value={p.value} className="bg-pubg-dark">{t(p.labelKey)}</option>
               ))}
             </select>
             <input type="text" value={name} onChange={(e) => setName(e.target.value)}
@@ -84,7 +85,7 @@ export default function SearchBar({ compact = false, large = false, onSearch }) 
                 <Clock size={13} className="text-pubg-muted shrink-0" />
                 <button onClick={() => selectHistory(item)} className="flex-1 text-left text-sm text-gray-300 hover:text-white">
                   {item.name}
-                  <span className="ml-2 text-xs text-pubg-muted">{item.platform}</span>
+                  <span className="ml-2 text-xs text-pubg-muted">{getPlatformLabel(item.platform, t)}</span>
                 </button>
                 <button onClick={(e) => { e.stopPropagation(); removeSearch(item.name, item.platform); }}
                   className="text-pubg-muted hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all p-0.5">
@@ -110,7 +111,7 @@ export default function SearchBar({ compact = false, large = false, onSearch }) 
             <select value={platform} onChange={(e) => setPlatform(e.target.value)}
               className="w-full bg-pubg-card border border-pubg-border text-gray-300 rounded-xl pl-10 pr-9 py-3 outline-none focus:border-pubg-orange transition-colors text-sm appearance-none">
               {PLATFORMS.map((p) => (
-                <option key={p.value} value={p.value} className="bg-pubg-dark">{p.label}</option>
+                <option key={p.value} value={p.value} className="bg-pubg-dark">{t(p.labelKey)}</option>
               ))}
             </select>
             <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-pubg-muted pointer-events-none" />
@@ -140,7 +141,7 @@ export default function SearchBar({ compact = false, large = false, onSearch }) 
               <Clock size={14} className="text-pubg-muted shrink-0" />
               <button onClick={() => selectHistory(item)} className="flex-1 text-left flex items-center gap-2">
                 <span className="text-white text-sm">{item.name}</span>
-                <span className="text-xs text-pubg-muted px-1.5 py-0.5 bg-pubg-border rounded">{item.platform}</span>
+                <span className="text-xs text-pubg-muted px-1.5 py-0.5 bg-pubg-border rounded">{getPlatformLabel(item.platform, t)}</span>
               </button>
               <button onClick={(e) => { e.stopPropagation(); removeSearch(item.name, item.platform); }}
                 className="text-pubg-muted hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all p-1">

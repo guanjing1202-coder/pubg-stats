@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import SearchBar from '../components/search/SearchBar';
 import { pubgApi } from '../utils/api';
 import { getApiStatusState } from '../utils/apiStatusState';
+import { getPlatformLabel } from '../utils/formatters';
 import { useRecentSearches, useFavorites } from '../hooks/useLocalStorage';
 import { useLanguage } from '../contexts/LanguageContext';
 import { BarChart3, ClipboardList, Crosshair, Server, Shield, Swords, Clock, Star, Trophy, X, ChevronRight } from 'lucide-react';
@@ -34,7 +35,7 @@ const API_STATUS_VIEW = {
   },
 };
 
-function PlayerLink({ name, platform, onRemove, icon }) {
+function PlayerLink({ name, platform, onRemove, icon, t }) {
   const Icon = icon;
   return (
     <div className="group flex items-center gap-2 card px-3 py-2.5 hover:border-pubg-orange/50 transition-all">
@@ -42,7 +43,7 @@ function PlayerLink({ name, platform, onRemove, icon }) {
       <Link to={`/player/${platform}/${encodeURIComponent(name)}`}
         className="flex-1 min-w-0 flex items-center gap-2 text-sm">
         <span className="text-gray-300 hover:text-white truncate transition-colors">{name}</span>
-        <span className="text-xs text-pubg-muted shrink-0">{platform}</span>
+        <span className="text-xs text-pubg-muted shrink-0">{getPlatformLabel(platform, t)}</span>
       </Link>
       <Link to={`/player/${platform}/${encodeURIComponent(name)}`}
         className="text-pubg-muted hover:text-pubg-orange transition-colors opacity-0 group-hover:opacity-100 shrink-0">
@@ -102,7 +103,7 @@ export default function Home() {
 
           <div className="flex items-center justify-center gap-2 mb-3">
             <div className="h-px w-12 bg-pubg-orange/40" />
-            <span className="text-pubg-orange text-xs font-semibold tracking-[0.3em] uppercase">by Guan Jing</span>
+            <span className="text-pubg-orange text-xs font-semibold tracking-[0.3em] uppercase">{t('home_byline')}</span>
             <div className="h-px w-12 bg-pubg-orange/40" />
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-2 leading-tight">
@@ -137,7 +138,7 @@ export default function Home() {
                 <div className="space-y-1.5">
                   {searches.slice(0, 5).map((s) => (
                     <PlayerLink key={`${s.platform}-${s.name}`} name={s.name} platform={s.platform}
-                      onRemove={() => removeSearch(s.name, s.platform)} icon={Clock} />
+                      onRemove={() => removeSearch(s.name, s.platform)} icon={Clock} t={t} />
                   ))}
                 </div>
               </div>
@@ -154,7 +155,7 @@ export default function Home() {
                 <div className="space-y-1.5">
                   {favorites.slice(0, 5).map((f) => (
                     <PlayerLink key={`${f.platform}-${f.name}`} name={f.name} platform={f.platform}
-                      onRemove={() => removeFavorite(f.name, f.platform)} icon={Star} />
+                      onRemove={() => removeFavorite(f.name, f.platform)} icon={Star} t={t} />
                   ))}
                 </div>
               </div>
@@ -189,7 +190,7 @@ export default function Home() {
             { val: '8+', labelKey: 'home_stat_maps' },
             { val: '6', labelKey: 'home_stat_modes' },
             { val: '32', labelKey: 'home_stat_matches' },
-            { val: 'Top500', labelKey: 'home_stat_global' },
+            { val: t('home_stat_global_value'), labelKey: 'home_stat_global' },
           ].map((s) => (
             <div key={s.labelKey}>
               <div className="text-2xl font-black text-pubg-orange font-mono">{s.val}</div>
